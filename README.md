@@ -27,5 +27,8 @@ npm run start
 
 server.js file is setup for deployment. you can deploy it on any server directly to run this app or test this app locally using above instructions.
 
+Below is link of app deployed on Heroku
+https://dota-heros.herokuapp.com/
+
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
