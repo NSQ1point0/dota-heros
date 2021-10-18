@@ -9,9 +9,7 @@
           <td class="hero-col">Rank</td>
           <td class="hero-col">Hero Image</td>
           <td class="hero-col">Hero Name</td>
-          <td class="hero-col">PRO Win Rate</td>
-          <td class="hero-col">Pro Pick Count</td>
-          <td class="hero-col">Pro Ban Count</td>
+          <td class="hero-col">PRO Stats</td>
         </tr>
       </thead>
       <tbody>
@@ -21,9 +19,19 @@
             <img v-bind:src="'http://cdn.dota2.com/'+hero.img" alt="Hero Image" class="hero-img">
           </td>
           <td class="hero-col hero-name">{{hero.localized_name}}</td>
-          <td class="hero-col">{{hero.pro_win}}</td>
-          <td class="hero-col">{{hero.pro_pick}}</td>
-          <td class="hero-col">{{hero.pro_ban}}</td>
+          <!-- <td class="hero-col stats-col">
+            Pro win - {{hero.pro_win}} <br><br>
+            Pro pick - {{hero.pro_pick}} <br><br>
+            Pro ban - {{hero.pro_ban}} <br><br>
+          </td> -->
+          <td class="hero-col chart-col">
+            Pro win<div :data-value="hero.pro_win" class="chart-bar" style="background-color:#4E9F3D;"></div>
+            <br>
+            Pro pick<div :data-value="hero.pro_pick" class="chart-bar" style="background-color:#FFA400;"></div>
+            <br>
+            Pro ban<div :data-value="hero.pro_ban" class="chart-bar" style="background-color:#DA0037;"></div>
+            <!-- {{{drawBar([hero.pro_pick, hero.pro_win, hero.pro_ban])}}} -->
+          </td>
         </tr>
       </tbody>
     </table>
@@ -33,13 +41,27 @@
 
 <script>
 import _ from 'lodash';
+import * as d3 from 'd3'
 
 export default {
   name: 'HerosTable',
   data(){
     return {
       searchInput: '',
+      chartWidth: 400,
+      chartHeight: 200,
     }
+  },
+  methods: {
+    barWidth(value) {
+      return this.chartWidth / this.getMaxVal * value
+    }
+  },
+  updated(){
+    d3.selectAll(".chart-bar")
+        .datum(function() { return this.getAttribute("data-value")})
+        .style("width", d => `${this.barWidth(d)}px`)
+        .text(d => d);
   },
   computed: {
     getHeros() {
@@ -51,8 +73,19 @@ export default {
       return herosData.filter((hero) => {
         let heroName = hero.localized_name.toLowerCase()
         let searchQuery = this.searchInput.toLowerCase()
-        return heroName.match(searchQuery)
+        return heroName.match(searchQuery) && ("pro_win" in hero) && ("pro_ban" in hero) && ("pro_pick" in hero) && ("img" in hero)
       });
+    },
+    getMaxVal() {
+      const temp = []
+
+      temp.push(_.max(this.getHeros.map(i => i.pro_win)))
+      temp.push(_.max(this.getHeros.map(i => i.pro_pick)))
+      temp.push(_.max(this.getHeros.map(i => i.pro_ban)))
+
+      console.log(_.max(temp))
+
+      return _.max(temp)
     }
   }
 }

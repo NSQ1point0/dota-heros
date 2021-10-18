@@ -39,6 +39,7 @@
   background-color: #40394A;
   color: #30E3CA;
   font-weight: bold;
+  border-bottom: 1px solid #FEF9EF;
 }
 
 .hero-row:hover{
@@ -76,8 +77,22 @@ thead .hero-row:hover{
     transition: outline 0.2s;
 }
 
+.stats-col{
+  text-align: left;
+}
+
 .hide{
   display: none;
+}
+
+.chart-col{
+  text-align: left;
+  color: #fff;
+}
+
+.chart-bar{
+  padding: 3px;
+  margin: 1px;
 }
 
 @media all and (max-width: 768px){
