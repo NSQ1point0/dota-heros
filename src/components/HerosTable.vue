@@ -19,11 +19,6 @@
             <img v-bind:src="'http://cdn.dota2.com/'+hero.img" alt="Hero Image" class="hero-img">
           </td>
           <td class="hero-col hero-name">{{hero.localized_name}}</td>
-          <!-- <td class="hero-col stats-col">
-            Pro win - {{hero.pro_win}} <br><br>
-            Pro pick - {{hero.pro_pick}} <br><br>
-            Pro ban - {{hero.pro_ban}} <br><br>
-          </td> -->
           <td class="hero-col chart-col">
             Pro win<div :data-value="hero.pro_win" class="chart-bar" style="background-color:#4E9F3D;"></div>
             <br>
